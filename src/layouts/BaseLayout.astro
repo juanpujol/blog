@@ -1,0 +1,44 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import { SITE_TITLE } from '../consts';
+
+interface Props {
+	title: string;
+	description: string;
+	path?: string;
+	type?: 'website' | 'article';
+}
+
+const { title, description, path = '~', type = 'website' } = Astro.props;
+const documentTitle = title === SITE_TITLE ? title : `${title} | ${SITE_TITLE}`;
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={documentTitle} description={description} type={type} />
+	</head>
+	<body>
+		<a class="skip-link" href="#main-content">Skip to content</a>
+		<div class="site-shell">
+			<header class="terminal-bar">
+				<a class="terminal-name" href="/" aria-label="Juan Pujol, home">
+					<span aria-hidden="true">~</span>
+					juan@blog
+				</a>
+				<span class="terminal-path">{path}</span>
+			</header>
+
+			<main id="main-content">
+				<slot />
+			</main>
+
+			<footer class="status-line">
+				<span class="mode">NORMAL</span>
+				<span>&copy; {year} Juan Pujol</span>
+				<span class="position">1:1</span>
+			</footer>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Not found" description="The requested page could not be found." path="~/.404">
+	<section class="not-found">
+		<p><span>&gt;</span> open requested-file</p>
+		<h1>404</h1>
+		<p class="error">E484: Can't open file</p>
+		<a href="/">&lt;- return home</a>
+	</section>
+</BaseLayout>
+
+<style>
+	.not-found {
+		padding: clamp(3rem, 12vw, 8rem) 0;
+	}
+
+	.not-found > p:first-child,
+	.not-found a {
+		color: var(--foam);
+	}
+
+	.not-found span {
+		color: var(--gold);
+	}
+
+	h1 {
+		margin: 1rem 0;
+		color: var(--iris);
+		font-size: clamp(5rem, 20vw, 10rem);
+		letter-spacing: -0.08em;
+		line-height: 1;
+	}
+
+	.error {
+		margin-bottom: 3rem;
+		color: var(--love);
+	}
+</style>
