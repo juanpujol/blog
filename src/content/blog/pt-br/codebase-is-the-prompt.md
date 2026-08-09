@@ -1,7 +1,7 @@
 ---
 title: "Internacionalizei meu app porque os agentes de IA não paravam de escrever em português"
 description: "Como uma migração de i18n em 785 arquivos tirou o português do código quando as regras para agentes não deram conta."
-pubDate: "2026-08-01"
+pubDate: "2026-08-09"
 locale: "pt-br"
 translationKey: "codebase-is-the-prompt"
 ---

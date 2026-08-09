@@ -1,7 +1,7 @@
 ---
 title: "I internationalized my app to fix AI agent language drift"
 description: "How a 785-file i18n migration got Portuguese out of the codebase after the agent rules failed."
-pubDate: "2026-08-01"
+pubDate: "2026-08-09"
 locale: "en"
 translationKey: "codebase-is-the-prompt"
 ---
