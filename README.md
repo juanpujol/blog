@@ -4,19 +4,28 @@ A static Astro blog published from Markdown files and designed around a Rosé Pi
 
 ## Writing
 
-Create a Markdown file in `src/content/blog/`:
+Create English posts in `src/content/blog/en/` and Brazilian Portuguese posts in
+`src/content/blog/pt-br/`:
 
 ```md
 ---
 title: "Article title"
 description: "A short summary shown on the homepage."
 pubDate: "2026-08-09"
+locale: "en"
+translationKey: "article-name"
 ---
 
 Article content.
 ```
 
-The filename becomes the URL: `example.md` is available at `/blog/example/`.
+The filename becomes the URL. For example, `en/example.md` is available at
+`/blog/example/`, while `pt-br/example.md` is available at
+`/pt-br/blog/example/`.
+
+Translated versions of the same article must use the same `translationKey`.
+This connects their language switcher and SEO alternate links even if their
+filenames differ.
 
 ## Commands
 

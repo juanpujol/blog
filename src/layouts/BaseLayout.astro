@@ -1,6 +1,14 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
 import { SITE_TITLE } from '../consts';
+import {
+	DEFAULT_LOCALE,
+	homeUrl,
+	languages,
+	ui,
+	type Locale,
+	type LocaleLink,
+} from '../lib/i18n';
 import { ClientRouter } from 'astro:transitions';
 
 interface Props {
@@ -8,31 +16,70 @@ interface Props {
 	description: string;
 	path?: string;
 	type?: 'website' | 'article';
+	locale?: Locale;
+	translations?: LocaleLink[];
 }
 
-const { title, description, path = '~', type = 'website' } = Astro.props;
+const {
+	title,
+	description,
+	path = '~',
+	type = 'website',
+	locale = DEFAULT_LOCALE,
+	translations = [],
+} = Astro.props;
 const documentTitle = title === SITE_TITLE ? title : `${title} | ${SITE_TITLE}`;
+const copy = ui[locale];
 const year = new Date().getFullYear();
 ---
 
 <!doctype html>
-<html lang="en" transition:name="root" transition:animate="none">
+<html lang={languages[locale].html} transition:name="root" transition:animate="none">
 	<head>
-		<BaseHead title={documentTitle} description={description} type={type} />
+		<BaseHead
+			title={documentTitle}
+			description={description}
+			type={type}
+			locale={locale}
+			translations={translations}
+		/>
 		<ClientRouter fallback="swap" />
 	</head>
 	<body>
-		<a class="skip-link" href="#main-content">Skip to content</a>
+		<a class="skip-link" href="#main-content">{copy.skip}</a>
 		<div class="site-shell">
 			<header class="terminal-bar">
 				<div class="terminal-tabs">
-					<a class="terminal-name" href="/" aria-label="Juan Pujol, home">
+					<a class="terminal-name" href={homeUrl(locale)} aria-label={copy.home}>
 						<span aria-hidden="true">~</span>
 						juan@blog
 					</a>
 					<span class="terminal-context" aria-hidden="true">notes</span>
 				</div>
-				<span class="terminal-path">{path}</span>
+				<div class="terminal-meta">
+					<span class="terminal-path">{path}</span>
+					{
+						translations.length > 1 && (
+							<nav class="language-nav" aria-label={copy.languages}>
+								{translations.map((translation) =>
+									translation.locale === locale ? (
+										<span aria-current="page">
+											{languages[translation.locale].label}
+										</span>
+									) : (
+										<a
+											href={translation.href}
+											hreflang={languages[translation.locale].html}
+											lang={languages[translation.locale].html}
+										>
+											{languages[translation.locale].label}
+										</a>
+									),
+								)}
+							</nav>
+						)
+					}
+				</div>
 			</header>
 
 			<main id="main-content">

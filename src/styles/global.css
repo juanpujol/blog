@@ -131,10 +131,42 @@ a:focus-visible {
 }
 
 .terminal-path {
+  min-width: 0;
   overflow: hidden;
   color: var(--muted);
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.terminal-meta {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  min-width: 0;
+}
+
+.language-nav {
+  display: flex;
+  flex: none;
+  gap: 0.15rem;
+  align-items: center;
+}
+
+.language-nav a,
+.language-nav span {
+  padding: 0.25rem 0.4rem;
+  color: var(--subtle);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.language-nav a:hover {
+  color: var(--gold);
+}
+
+.language-nav span[aria-current="page"] {
+  background: var(--surface);
+  color: var(--foam);
 }
 
 main {
@@ -202,6 +234,19 @@ main {
 }
 
 @media (max-width: 640px) {
+  .terminal-bar {
+    gap: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .terminal-context {
+    display: none;
+  }
+
+  .terminal-meta {
+    gap: 0.4rem;
+  }
+
   main {
     padding: 2.5rem 0 0;
   }

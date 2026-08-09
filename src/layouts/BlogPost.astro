@@ -1,38 +1,71 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import FormattedDate from '../components/FormattedDate.astro';
+import { homeUrl, languages, postUrl, ui, type LocaleLink } from '../lib/i18n';
 import BaseLayout from './BaseLayout.astro';
 
-type Props = CollectionEntry<'blog'>['data'] & { slug: string };
+type Props = CollectionEntry<'blog'>['data'] & {
+	slug: string;
+	translations: LocaleLink[];
+};
 
-const { title, description, pubDate, updatedDate, slug } = Astro.props;
-const routePath = `~/blog/${slug}/`;
+const {
+	title,
+	description,
+	pubDate,
+	updatedDate,
+	slug,
+	locale,
+	translations,
+} = Astro.props;
+const copy = ui[locale];
+const routePath = `~${postUrl(locale, slug)}`;
 ---
 
-	<BaseLayout
-		title={title}
-		description={description}
-		path={routePath}
-		type="article"
-	>
-		<article class="article">
-			<p class="pane-label">
-				<span aria-hidden="true">&gt;</span>
-				<span class="pane-path">{routePath}</span>
-			</p>
-		<a class="back" href="/">&lt;- cd ..</a>
+<BaseLayout
+	title={title}
+	description={description}
+	path={routePath}
+	type="article"
+	locale={locale}
+	translations={translations}
+>
+	<article class="article">
+		<p class="pane-label">
+			<span aria-hidden="true">&gt;</span>
+			<span class="pane-path">{routePath}</span>
+		</p>
+		<div class="article-controls">
+			<a class="back" href={homeUrl(locale)}>&lt;- cd ..</a>
+			{
+				translations.length > 1 && (
+					<nav class="article-tabs" aria-label={copy.languages}>
+						{translations.map((translation) => (
+							<a
+								href={translation.href}
+								hreflang={languages[translation.locale].html}
+								lang={languages[translation.locale].html}
+								aria-current={translation.locale === locale ? 'page' : undefined}
+							>
+								{languages[translation.locale].label}
+							</a>
+						))}
+					</nav>
+				)
+			}
+		</div>
 
 		<header class="article-header">
 			<p class="meta">
-				<span>published</span>
-				<FormattedDate date={pubDate} />
+				<span>{copy.published}</span>
+				<FormattedDate date={pubDate} locale={locale} />
 			</p>
 			<h1>{title}</h1>
 			<p class="description">{description}</p>
 			{
 				updatedDate && (
 					<p class="updated">
-						Last updated <FormattedDate date={updatedDate} />
+						{copy.updated} <FormattedDate date={updatedDate} locale={locale} />
 					</p>
 				)
 			}
@@ -49,7 +82,7 @@ const routePath = `~/blog/${slug}/`;
 		position: relative;
 		max-width: 49rem;
 		margin: 0 auto;
-		padding: clamp(3rem, 7vw, 5rem) clamp(1.25rem, 6vw, 4.5rem)
+		padding: clamp(2rem, 4vw, 3rem) clamp(1.25rem, 6vw, 4.5rem)
 			clamp(4rem, 9vw, 7rem);
 		border: 1px solid var(--border);
 	}
@@ -58,9 +91,16 @@ const routePath = `~/blog/${slug}/`;
 		color: var(--gold);
 	}
 
+	.article-controls {
+		display: flex;
+		gap: 1rem;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 1.5rem;
+	}
+
 	.back {
 		display: inline-block;
-		margin-bottom: clamp(3rem, 7vw, 5rem);
 		color: var(--foam);
 		font-size: 0.85rem;
 		font-weight: 700;
@@ -69,6 +109,38 @@ const routePath = `~/blog/${slug}/`;
 
 	.back:hover {
 		color: var(--gold);
+	}
+
+	.article-tabs {
+		display: flex;
+		width: max-content;
+		max-width: 100%;
+		border: 1px solid var(--border);
+		background: var(--base-dark);
+	}
+
+	.article-tabs a {
+		padding: 0.35rem 0.65rem;
+		color: var(--muted);
+		font-size: 0.7rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		text-align: center;
+		text-decoration: none;
+	}
+
+	.article-tabs a + a {
+		border-left: 1px solid var(--border);
+	}
+
+	.article-tabs a:hover {
+		background: var(--surface);
+		color: var(--gold);
+	}
+
+	.article-tabs a[aria-current='page'] {
+		background: var(--rose);
+		color: var(--base-dark);
 	}
 
 	.article-header {
@@ -80,7 +152,7 @@ const routePath = `~/blog/${slug}/`;
 	.meta {
 		display: flex;
 		gap: 0.75rem;
-		margin: 0 0 1.5rem;
+		margin: 0 0 1rem;
 		color: var(--muted);
 		font-size: 0.8rem;
 		font-variant-numeric: tabular-nums;
@@ -242,7 +314,7 @@ const routePath = `~/blog/${slug}/`;
 
 	@media (max-width: 640px) {
 		.article {
-			padding: 3.5rem 1.25rem 5rem;
+			padding: 2.5rem 1.25rem 5rem;
 			border-inline: 0;
 			border-bottom: 0;
 		}

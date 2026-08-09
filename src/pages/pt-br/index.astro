@@ -1,10 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
-import Home from '../layouts/Home.astro';
+import Home from '../../layouts/Home.astro';
 
 const posts = (await getCollection('blog'))
-	.filter((post) => post.data.locale === 'en')
+	.filter((post) => post.data.locale === 'pt-br')
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
-<Home posts={posts} locale="en" />
+<Home posts={posts} locale="pt-br" />

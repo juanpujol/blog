@@ -2,13 +2,11 @@
 title: "I internationalized my app to fix AI agent language drift"
 description: "How a 785-file i18n migration taught me that coding agents follow a codebase's structure more reliably than its written rules."
 pubDate: "2026-08-01"
+locale: "en"
+translationKey: "codebase-is-the-prompt"
 ---
 
-Let me be honest about why I did a 785-file i18n migration, because it's not the reason you think.
-
 It wasn't for the users. It wasn't "global expansion". Nobody asked for English.
-
-I did it because I was tired of AI agents writing Portuguese inside my code.
 
 ## The codebase was the stronger prompt
 
@@ -42,7 +40,7 @@ The migration took 43 commits, touched 785 files, and produced 3,237 message key
 
 ## The agents did the work
 
-Full disclosure: I didn't type most of those 43 commits. Agents worked through phase plans, other agents reviewed them, and I adjudicated like some kind of tiny court. The reviews caught real bugs, including date shifts, a cookie-expiry mismatch, and a script that exited successfully while reporting "not ready."
+Full disclosure: I didn't type any of those 43 commits. I orchestrated agents through each phase, assigned other agents to review their work, and played the annoying manager. The reviews caught real bugs, including date shifts, a cookie-expiry mismatch, and a script that exited successfully while reporting "not ready."
 
 That makes the story a nice loop: agents caused the problem, agents executed the fix, and lint guards now keep them honest. The machines broke it, fixed it, and now watch the machines. I mostly supervise and pay the token bill.
 
