@@ -13,6 +13,9 @@ interface Props {
 	type?: 'website' | 'article';
 	locale?: Locale;
 	translations?: LocaleLink[];
+	pubDate?: Date;
+	updatedDate?: Date;
+	headline?: string;
 }
 
 const {
@@ -21,6 +24,9 @@ const {
 	type = 'website',
 	locale = DEFAULT_LOCALE,
 	translations = [],
+	pubDate,
+	updatedDate,
+	headline,
 } = Astro.props;
 const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefined;
 const alternateURLs = translations.map((translation) => ({
@@ -30,6 +36,27 @@ const alternateURLs = translations.map((translation) => ({
 const defaultURL = alternateURLs.find(
 	(translation) => translation.locale === DEFAULT_LOCALE,
 );
+const articleData =
+	type === 'article' && canonicalURL && pubDate
+		? {
+				'@context': 'https://schema.org',
+				'@type': 'BlogPosting',
+				headline: headline ?? title,
+				description,
+				datePublished: pubDate.toISOString(),
+				...(updatedDate && { dateModified: updatedDate.toISOString() }),
+				inLanguage: languages[locale].html,
+				author: {
+					'@type': 'Person',
+					name: 'Juan Pujol',
+					url: new URL('/', canonicalURL).href,
+				},
+				mainEntityOfPage: {
+					'@type': 'WebPage',
+					'@id': canonicalURL.href,
+				},
+			}
+		: undefined;
 ---
 
 <meta charset="utf-8" />
@@ -37,6 +64,7 @@ const defaultURL = alternateURLs.find(
 <meta name="theme-color" content="#232136" />
 <meta name="color-scheme" content="dark" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="sitemap" href="/sitemap-index.xml" />
 <meta name="generator" content={Astro.generator} />
 
 {canonicalURL && <link rel="canonical" href={canonicalURL} />}
@@ -68,3 +96,5 @@ const defaultURL = alternateURLs.find(
 }
 
 <meta name="twitter:card" content="summary" />
+
+{articleData && <script type="application/ld+json" set:html={JSON.stringify(articleData)} />}

@@ -18,6 +18,8 @@ interface Props {
 	type?: 'website' | 'article';
 	locale?: Locale;
 	translations?: LocaleLink[];
+	pubDate?: Date;
+	updatedDate?: Date;
 }
 
 const {
@@ -27,6 +29,8 @@ const {
 	type = 'website',
 	locale = DEFAULT_LOCALE,
 	translations = [],
+	pubDate,
+	updatedDate,
 } = Astro.props;
 const documentTitle = title === SITE_TITLE ? title : `${title} | ${SITE_TITLE}`;
 const copy = ui[locale];
@@ -42,6 +46,9 @@ const year = new Date().getFullYear();
 			type={type}
 			locale={locale}
 			translations={translations}
+			pubDate={pubDate}
+			updatedDate={updatedDate}
+			headline={type === 'article' ? title : undefined}
 		/>
 		<ClientRouter fallback="swap" />
 	</head>
