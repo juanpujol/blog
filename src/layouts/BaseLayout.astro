@@ -1,6 +1,7 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
 import { SITE_TITLE } from '../consts';
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
 	title: string;
@@ -15,23 +16,29 @@ const year = new Date().getFullYear();
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" transition:name="root" transition:animate="none">
 	<head>
 		<BaseHead title={documentTitle} description={description} type={type} />
+		<ClientRouter fallback="swap" />
 	</head>
 	<body>
 		<a class="skip-link" href="#main-content">Skip to content</a>
 		<div class="site-shell">
 			<header class="terminal-bar">
-				<a class="terminal-name" href="/" aria-label="Juan Pujol, home">
-					<span aria-hidden="true">~</span>
-					juan@blog
-				</a>
+				<div class="terminal-tabs">
+					<a class="terminal-name" href="/" aria-label="Juan Pujol, home">
+						<span aria-hidden="true">~</span>
+						juan@blog
+					</a>
+					<span class="terminal-context" aria-hidden="true">notes</span>
+				</div>
 				<span class="terminal-path">{path}</span>
 			</header>
 
 			<main id="main-content">
-				<slot />
+				<div class="workspace">
+					<slot />
+				</div>
 			</main>
 
 			<footer class="status-line">

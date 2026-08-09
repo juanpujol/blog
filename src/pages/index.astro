@@ -9,62 +9,77 @@ const posts = (await getCollection('blog')).sort(
 ---
 
 <BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION} path="~/notes">
-	<section class="intro" aria-labelledby="intro-title">
-		<p class="command"><span aria-hidden="true">&gt;</span> whoami</p>
-		<h1 id="intro-title">Juan Pujol</h1>
-		<p class="lede">{SITE_DESCRIPTION}</p>
-	</section>
+	<div class="home-grid">
+		<section class="intro pane" aria-labelledby="intro-title">
+			<p class="command pane-label"><span aria-hidden="true">&gt;</span> whoami</p>
+			<div class="identity">
+				<h1 id="intro-title">Juan Pujol</h1>
+				<p class="lede">{SITE_DESCRIPTION}</p>
+			</div>
+		</section>
 
-	<section class="articles" aria-labelledby="articles-title">
-		<div class="section-command">
-			<span aria-hidden="true">&gt;</span>
-			<h2 id="articles-title">ls -lt ./posts</h2>
-		</div>
+		<section class="articles pane" aria-labelledby="articles-title">
+			<div class="section-command pane-label">
+				<span aria-hidden="true">&gt;</span>
+				<h2 id="articles-title">ls -lt ./posts</h2>
+			</div>
 
-		{
-			posts.length > 0 ? (
-				<ol class="post-list">
-					{posts.map((post) => (
-						<li>
-							<a href={`/blog/${post.id}/`}>
-								<time datetime={post.data.pubDate.toISOString()}>
-									{post.data.pubDate.toISOString().slice(0, 10)}
-								</time>
-								<span class="post-copy">
-									<strong>{post.data.title}</strong>
-									<span>{post.data.description}</span>
-								</span>
-								<span class="open" aria-hidden="true">-&gt;</span>
-							</a>
-						</li>
-					))}
-				</ol>
-			) : (
-				<p class="empty-state">
-					<span>total 0</span>
-					No entries yet. The cursor is blinking.
-				</p>
-			)
-		}
-	</section>
+			{
+				posts.length > 0 ? (
+					<ol class="post-list">
+						{posts.map((post) => (
+							<li>
+								<a href={`/blog/${post.id}/`}>
+									<time datetime={post.data.pubDate.toISOString()}>
+										{post.data.pubDate.toISOString().slice(0, 10)}
+									</time>
+									<span class="post-copy">
+										<strong>{post.data.title}</strong>
+										<span>{post.data.description}</span>
+									</span>
+									<span class="open" aria-hidden="true">-&gt;</span>
+								</a>
+							</li>
+						))}
+					</ol>
+				) : (
+					<p class="empty-state">
+						<span>total 0</span>
+						No entries yet. The cursor is blinking.
+					</p>
+				)
+			}
+		</section>
+	</div>
 </BaseLayout>
 
 <style>
+	.home-grid {
+		display: grid;
+		grid-template-columns: minmax(18rem, 0.72fr) minmax(0, 1.35fr);
+		min-height: min(42rem, calc(100vh - 9rem));
+		border: 1px solid var(--border);
+	}
+
+	.pane {
+		position: relative;
+		min-width: 0;
+	}
+
 	.intro {
-		max-width: 46rem;
-		padding: clamp(2rem, 8vw, 6rem) 0 clamp(4rem, 10vw, 7rem);
+		display: flex;
+		align-items: center;
+		padding: clamp(3rem, 6vw, 5.5rem) clamp(1.5rem, 3vw, 3rem);
+		border-right: 1px solid var(--border);
+	}
+
+	.identity {
+		width: 100%;
 	}
 
 	.command,
 	.section-command {
-		display: flex;
-		align-items: center;
-		gap: 0.75rem;
-		margin: 0 0 1.25rem;
 		color: var(--gold);
-		font-size: 0.875rem;
-		font-weight: 700;
-		letter-spacing: 0.04em;
 	}
 
 	.command span,
@@ -73,12 +88,11 @@ const posts = (await getCollection('blog')).sort(
 	}
 
 	h1 {
-		max-width: max-content;
 		margin: 0;
 		color: var(--text);
-		font-size: clamp(3rem, 10vw, 6.5rem);
-		letter-spacing: -0.08em;
-		line-height: 0.95;
+		font-size: clamp(2.8rem, 5vw, 4.8rem);
+		letter-spacing: -0.075em;
+		line-height: 1;
 	}
 
 	h1::after {
@@ -93,15 +107,14 @@ const posts = (await getCollection('blog')).sort(
 	}
 
 	.lede {
-		max-width: 40rem;
 		margin: 1.75rem 0 0;
 		color: var(--muted);
 		font-size: clamp(1rem, 2.5vw, 1.2rem);
 		line-height: 1.8;
 	}
 
-	.section-command {
-		margin-bottom: 0.75rem;
+	.articles {
+		padding: 2.25rem 0;
 	}
 
 	.section-command h2 {
@@ -114,11 +127,14 @@ const posts = (await getCollection('blog')).sort(
 	.post-list {
 		margin: 0;
 		padding: 0;
-		border-top: 1px solid var(--border);
 		list-style: none;
 	}
 
 	.post-list li {
+		border-top: 1px solid var(--border);
+	}
+
+	.post-list li:last-child {
 		border-bottom: 1px solid var(--border);
 	}
 
@@ -127,15 +143,14 @@ const posts = (await getCollection('blog')).sort(
 		grid-template-columns: 8rem minmax(0, 1fr) auto;
 		gap: 1.5rem;
 		align-items: start;
-		padding: 1.75rem 1rem;
+		padding: 1.6rem clamp(1rem, 2.5vw, 2rem);
 		color: inherit;
 		text-decoration: none;
-		transition: background-color 150ms ease, padding 150ms ease;
+		transition: background-color 150ms ease;
 	}
 
 	.post-list a:hover,
 	.post-list a:focus-visible {
-		padding-left: 1.4rem;
 		background: var(--highlight-low);
 	}
 
@@ -202,24 +217,31 @@ const posts = (await getCollection('blog')).sort(
 		}
 	}
 
-	@media (max-width: 640px) {
+	@media (max-width: 820px) {
+		.home-grid {
+			grid-template-columns: 1fr;
+			min-height: auto;
+		}
+
 		.intro {
-			padding-top: 3.5rem;
+			min-height: 24rem;
+			padding: 4rem clamp(1.25rem, 7vw, 3rem);
+			border-right: 0;
+			border-bottom: 1px solid var(--border);
 		}
 
 		h1 {
-			font-size: clamp(2.8rem, 17vw, 4.5rem);
+			font-size: clamp(2.8rem, 14vw, 4.5rem);
+		}
+
+		.articles {
+			padding-top: 2.5rem;
 		}
 
 		.post-list a {
 			grid-template-columns: 1fr auto;
 			gap: 0.75rem 1rem;
-			padding-inline: 0;
-		}
-
-		.post-list a:hover,
-		.post-list a:focus-visible {
-			padding-left: 0.75rem;
+			padding-inline: 1.25rem;
 		}
 
 		.post-list time {

@@ -1,6 +1,6 @@
 ---
-title: "I internationalized my app so AI agents would stop writing Portuguese in my code"
-description: "How a 785-file i18n migration gave Portuguese UI copy a legal home and aligned coding agents with an English codebase."
+title: "I internationalized my app to fix AI agent language drift"
+description: "How a 785-file i18n migration taught me that coding agents follow a codebase's structure more reliably than its written rules."
 pubDate: "2026-08-01"
 ---
 
@@ -12,7 +12,7 @@ I did it because I was tired of AI agents writing Portuguese inside my code.
 
 ## The actual problem
 
-Laiki is a marketing analytics platform for the Brazilian market. The product speaks pt-BR because the customers speak pt-BR. Reasonable. So over time the codebase filled up with Portuguese strings: button labels, validation messages, error translations, email templates. Also reasonable.
+<a href="https://laiki.co" target="_blank" rel="noopener">Laiki</a> is a marketing analytics platform for the Brazilian market. The product speaks pt-BR because the customers speak pt-BR. Reasonable. So over time the codebase filled up with Portuguese strings: button labels, validation messages, error translations, email templates. Also reasonable.
 
 Then I started working with coding agents. A lot. And the agents did what agents do best: they looked at my codebase and imitated it. Perfectly.
 
