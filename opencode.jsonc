@@ -4,7 +4,7 @@
     "cloudflare-api": {
       "type": "remote",
       "url": "https://mcp.cloudflare.com/mcp",
-      "enabled": true
-    }
-  }
+      "enabled": true,
+    },
+  },
 }
