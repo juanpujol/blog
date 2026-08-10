@@ -30,6 +30,8 @@ export const ui = {
     skip: "Skip to content",
     home: "Juan Pujol, home",
     languages: "Languages",
+    socials: "Social links",
+    linkedin: "Juan Pujol on LinkedIn",
     published: "published",
     updated: "Last updated",
     empty: "No entries yet. The cursor is blinking.",
@@ -39,6 +41,8 @@ export const ui = {
     skip: "Pular para o conteúdo",
     home: "Juan Pujol, início",
     languages: "Idiomas",
+    socials: "Links sociais",
+    linkedin: "Juan Pujol no LinkedIn",
     published: "publicado",
     updated: "Última atualização",
     empty: "Nenhum texto por aqui ainda. O cursor continua piscando.",
@@ -50,6 +54,8 @@ export const ui = {
     skip: string;
     home: string;
     languages: string;
+    socials: string;
+    linkedin: string;
     published: string;
     updated: string;
     empty: string;
